@@ -10,6 +10,7 @@ define(function (require) {
             ClassName: "",
             IconsName: ""
         },
+
         initialize: function () {
 
         },
