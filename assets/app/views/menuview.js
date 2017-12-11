@@ -1,40 +1,59 @@
-var menus = [];
+define(function (require) {
+    var $ = require('jquery'),
+        Backbone = require('backbone'),
+        _ = require('underscore'),
+        menu = require('app/models/menus'),
+        tpl = require('text!app/templates/Menu.html');
 
-var menu = new Menu();
-menu.Name = "Home";
-menu.DisplayName = "Home";
-menu.Link = "";
-menu.ClassName = "active";
-menu.IconsName = "";
-menus.push(menu);
 
-var menu1 = new Menu();
-menu1.Name = "Contact";
-menu1.DisplayName = "Contact";
-menu1.Link = "#";
-menu1.ClassName = "active";
-menu1.IconsName = "";
-menus.push(menu1);
-var menuView = Backbone.View.extend({
-    el: "#navbar",
-    model: menus,
-    initialize: function () {
-        this.render();
-    },
-    template: "",
-    render: function () {
-        var html = "<ul class='nav navbar-nav'>";
-        for (var i = 0; i < this.model.length; i++) {
-            if (i == 0) {
-                html += "<li class='active'><a href='"+this.model[i].Link+"'>"+this.model[i].DisplayName+"</a></li>";
-            } else {
-                html += "<li><a href='"+this.model[i].Link+"'>"+this.model[i].DisplayName+"</a></li>";
+    var menus = [];
+    var m = new menu();
+    m.Name = "Home";
+    m.DisplayName = "Home";
+    m.Link = "";
+    m.ClassName = "active";
+    m.IconsName = "";
+    menus.push(m);
+
+    var m1 = new menu();
+    m1.Name = "Contact";
+    m1.DisplayName = "Contact";
+    m1.Link = "#contact";
+    m1.ClassName = "active";
+    m.IconsName = "";
+    menus.push(m1);
+    var template=_.template(tpl,menus);
+    console.log(template);
+    var menuview = Backbone.View.extend({
+        el: "#navbar",
+        model: menus,
+        initialize: function () {
+            this.render();
+        },
+        template:_.template(tpl),
+        render: function () {
+            var html = "<ul class='nav navbar-nav'>";
+            for (var i = 0; i < this.model.length; i++) {
+                if (i == 0) {
+                    html += "<li class='active'><a href='" + this.model[i].Link + "'>" + this.model[i].DisplayName + "</a></li>";
+                } else {
+                    html += "<li><a href='" + this.model[i].Link + "'>" + this.model[i].DisplayName + "</a></li>";
+                }
             }
+            html += "</ul>";
+            this.$el.html(template({menus:this.model}));
+            return this;
+        },
+        events: {
+            "click .navbar-nav > li > a": "changeactiveclass"
+        },
+        changeactiveclass: function (event) {
+            $("ul.navbar-nav > li").each(function (e) {
+                $(this).removeClass('active');
+            });
+            var li = $(event.currentTarget.parentElement);
+            li.addClass('active');
         }
-        html += "</ul>";
-        this.$el.html(html);
-        return this;
-    }
-});
-var menuView = new menuView();
-
+    });
+    return menuview;
+})

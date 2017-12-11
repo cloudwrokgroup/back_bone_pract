@@ -1,0 +1,14 @@
+<ul class='nav navbar-nav'>
+    <%
+    for (var i = 0; i < menus.length; i++) {
+    if (i == 0) {
+    %>
+    <li class='active'><a href='<%=menus[i].Link%>' ><%=menus[i].DisplayName%></a></li>
+    <%
+    }else{
+    %>
+    <li><a href='<%=menus[i].Link%>'><%=menus[i].DisplayName %></a></li>
+    <%
+    }}
+    %>
+</ul>
